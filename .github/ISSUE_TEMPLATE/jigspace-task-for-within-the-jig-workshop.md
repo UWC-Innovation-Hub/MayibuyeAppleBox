@@ -1,9 +1,9 @@
 ---
 name: Jigspace task for within the Jig Workshop
-about: Describe this issue template's purpose here.
+about: Use this template for anything related to work done within Jigspace
 title: "[JIGSPACE] - Integration and implementation in JigSpace platform"
 labels: ''
-assignees: ''
+assignees: UWC-UIH-Dev
 
 ---
 
