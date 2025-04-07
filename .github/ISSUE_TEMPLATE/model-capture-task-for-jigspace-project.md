@@ -1,6 +1,7 @@
 ---
 name: Model Capture Task for Jigspace Project
-about: Describe the objective of the task
+about: Use this when assigning a Data Capture task related to photogrammetry or photo
+  taking
 title: "[MODEL Capture] - Initial 3D scanning and photogrammetry of physical artifacts"
 labels: 3D Capture
 assignees: ''
