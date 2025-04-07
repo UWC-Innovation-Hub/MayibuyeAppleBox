@@ -1,5 +1,5 @@
 ---
-name: Pre Prod Taskss
+name: Pre Prod Task
 about: Use this for anything Pre Pro including brainstorming and storyboarding
 title: "[PRE PROD] - Brainstorming sessions, storyboarding, and production planning"
 labels: ''

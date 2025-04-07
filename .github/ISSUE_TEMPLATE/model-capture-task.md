@@ -1,9 +1,10 @@
 ---
-name: Jigspace task for within the Jig Workshop
-about: Use this template for anything related to work done within Jigspace
-title: "[JIGSPACE] - Integration and implementation in JigSpace platform"
-labels: ''
-assignees: UWC-UIH-Dev
+name: Model Capture Task
+about: Use this when assigning a Data Capture task related to photogrammetry or photo
+  taking
+title: "[MODEL Capture] - Initial 3D scanning and photogrammetry of physical artifacts"
+labels: 3D Capture
+assignees: ''
 
 ---
 
