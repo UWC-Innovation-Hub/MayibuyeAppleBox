@@ -3,7 +3,7 @@ name: Pre Prod Task
 about: Use this for anything Pre Pro including brainstorming and storyboarding
 title: "[PRE PROD] - Brainstorming sessions, storyboarding, and production planning"
 labels: Preproduction Phase
-assignees: Management & Coordinators
+assignees: KaylynFritz, AyeshaBoomgaard
 
 ---
 

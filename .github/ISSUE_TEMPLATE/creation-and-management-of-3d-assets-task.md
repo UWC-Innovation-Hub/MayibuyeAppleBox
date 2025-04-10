@@ -3,7 +3,7 @@ name: Creation and Management of 3D Assets Task
 about: Use this for anything to do with 3D model editing
 title: "[3D ASSET] - Creation and management of 3D assets before optimization"
 labels: 3D Optimization
-assignees: Management & Coordinators
+assignees: KaylynFritz, AyeshaBoomgaard
 
 ---
 

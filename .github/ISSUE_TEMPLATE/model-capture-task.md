@@ -4,7 +4,7 @@ about: Use this when assigning a Data Capture task related to photogrammetry or 
   taking
 title: "[MODEL Capture] - Initial 3D scanning and photogrammetry of physical artifacts"
 labels: 3D Capture
-assignees: Management & Coordinators
+assignees: KaylynFritz, AyeshaBoomgaard
 
 ---
 
