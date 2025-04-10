@@ -2,8 +2,8 @@
 name: Jigspace Task
 about: Use this template for anything related to work done within Jigspace
 title: "[JIGSPACE] - Integration and implementation in JigSpace platform"
-labels: ''
-assignees: UWC-UIH-Dev
+labels: JIGSPACE Interactions
+assignees: Management & Coordinators
 
 ---
 
