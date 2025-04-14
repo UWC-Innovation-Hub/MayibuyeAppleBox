@@ -3,7 +3,7 @@ name: 3D Model Import in Jigspace Task
 about: Use this template for importing a model in the Jigspace Library
 title: "[3D MODEL IMPORT] - Importing 3D assets into the Jigspace Library"
 labels: 3D Model Import in Jigspace
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

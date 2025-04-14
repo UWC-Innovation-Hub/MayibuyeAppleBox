@@ -3,7 +3,7 @@ name: Evaluation Task
 about: Use this template for project evaluation and lessons learned documentation
 title: "[EVALUATION] - Project evaluation and lessons learned documentation"
 labels: documentation
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

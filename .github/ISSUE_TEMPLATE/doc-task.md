@@ -3,7 +3,7 @@ name: Doc Task
 about: Use this template for documentation of assets, processes and deliverables
 title: "[DOC] - Documentation of assets, processes and deliverables"
 labels: documentation
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

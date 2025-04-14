@@ -2,8 +2,8 @@
 name: Closure Task
 about: Use this template for formal project closure and archiving
 title: "[CLOSURE] - Formal project closure and archiving"
-labels: XR Release & Deploy
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

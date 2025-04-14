@@ -2,8 +2,8 @@
 name: XR Unit Test Case
 about: Use this template for creating unit test cases for XR components
 title: "[XR UNIT TEST] - Testing individual XR component or function"
-labels: Testing, Unit Testing, XR Testing
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

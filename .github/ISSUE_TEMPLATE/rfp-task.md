@@ -2,8 +2,8 @@
 name: RFP Task
 about: Use this template for Request for Proposal development
 title: "[RFP] - Request for Proposal development and submission"
-labels: Project Initiation
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

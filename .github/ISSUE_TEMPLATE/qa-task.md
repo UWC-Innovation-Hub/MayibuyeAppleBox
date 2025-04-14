@@ -3,7 +3,7 @@ name: QA Task
 about: Use this template for testing and quality assurance processes
 title: "[QA] - Testing and quality assurance processes"
 labels: enhancement
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

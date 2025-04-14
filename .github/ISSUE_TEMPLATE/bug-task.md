@@ -3,7 +3,7 @@ name: Bug Task
 about: Use this template when something isn't working correctly
 title: "[BUG] - Issue description"
 labels: bug
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

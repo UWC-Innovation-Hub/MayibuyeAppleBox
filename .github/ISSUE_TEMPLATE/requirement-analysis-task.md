@@ -2,8 +2,8 @@
 name: Requirement Analysis Task
 about: Use this template for detailed analysis of client needs
 title: "[REQUIREMENT ANALYSIS] - Detailed analysis of client needs and technical requirements"
-labels: Project Initiation
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

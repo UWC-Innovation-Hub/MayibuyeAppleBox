@@ -2,8 +2,8 @@
 name: RFQ Task
 about: Use this template for Request for Quotation and budget planning
 title: "[RFQ] - Request for Quotation and budget planning"
-labels: Project Initiation
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

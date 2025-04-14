@@ -3,7 +3,7 @@ name: 3D Presentation in Jigspace Task
 about: Use this template for creating a Jigspace solution
 title: "[3D PRESENTATION] - Creating interactive presentations in Jigspace"
 labels: 3D Presentation in Jigspace
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

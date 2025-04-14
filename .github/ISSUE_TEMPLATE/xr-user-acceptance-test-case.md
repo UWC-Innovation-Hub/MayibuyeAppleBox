@@ -2,8 +2,8 @@
 name: XR User Acceptance Test Case
 about: Use this template for creating user acceptance test cases for XR experiences
 title: "[XR UAT] - User acceptance testing for XR experience"
-labels: Testing, User Acceptance Testing, XR Testing
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

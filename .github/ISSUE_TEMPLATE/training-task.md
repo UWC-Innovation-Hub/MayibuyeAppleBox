@@ -2,8 +2,8 @@
 name: Training Task
 about: Use this template for client training on system usage and maintenance
 title: "[TRAINING] - Client training on system usage and maintenance"
-labels: XR Release & Deploy
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

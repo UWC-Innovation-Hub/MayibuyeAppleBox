@@ -1,9 +1,10 @@
 ---
 name: Client Engagement Task
 about: Use this for initial meetings with stakeholders
-title: "[CLIENT ENGAGEMENT] - Initial meetings with stakeholders to identify project goals"
-labels: Project Initiation
-assignees: KaylynFritz, AyeshaBoomgaard
+title: "[CLIENT ENGAGEMENT] - Initial meetings with stakeholders to identify project
+  goals"
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

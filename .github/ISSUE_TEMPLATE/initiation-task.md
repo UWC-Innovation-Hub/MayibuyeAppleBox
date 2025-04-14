@@ -2,8 +2,8 @@
 name: Initiation Task
 about: Use this template for project kickoff and resource allocation
 title: "[INITIATION] - Project kickoff and resource allocation"
-labels: Project Initiation
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

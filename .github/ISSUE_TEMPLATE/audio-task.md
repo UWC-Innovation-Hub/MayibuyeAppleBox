@@ -3,7 +3,7 @@ name: Audio Task
 about: Use this template for recording, editing and integration of audio narratives
 title: "[AUDIO] - Recording, editing and integration of audio narratives"
 labels: Audio Editing
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

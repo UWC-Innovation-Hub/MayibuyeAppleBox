@@ -2,8 +2,8 @@
 name: Delivery Task
 about: Use this template for final handover of deliverables to client
 title: "[DELIVERY] - Final handover of deliverables to client"
-labels: XR Release & Deploy
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

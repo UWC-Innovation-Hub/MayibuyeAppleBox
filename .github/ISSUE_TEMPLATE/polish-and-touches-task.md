@@ -3,7 +3,7 @@ name: Polish and Touches Task
 about: Use this template for fine tuning and editing effects or other similar tasks
 title: "[POLISH] - Fine tuning and final polishing of project elements"
 labels: Polish and Touches
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

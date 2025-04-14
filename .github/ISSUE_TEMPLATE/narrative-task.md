@@ -3,7 +3,7 @@ name: Narrative Task
 about: Use this template for development of storytelling content and contextual information
 title: "[NARRATIVE] - Development of storytelling content and contextual information"
 labels: documentation
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

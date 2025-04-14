@@ -3,7 +3,7 @@ name: Ideation Task
 about: Use this template for conceptual development and creative direction planning
 title: "[IDEATION] - Conceptual development and creative direction planning"
 labels: Preproduction Phase
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

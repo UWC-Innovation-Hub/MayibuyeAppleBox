@@ -3,7 +3,7 @@ name: Tools Creation Task
 about: Use this template when creating a tool or a process
 title: "[TOOLS] - Development of custom tools and processes"
 labels: Tools Creation
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

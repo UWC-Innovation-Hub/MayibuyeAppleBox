@@ -3,7 +3,7 @@ name: Texture Task
 about: Use this template for UV mapping and texture creation workflows
 title: "[TEXTURE] - UV mapping and texture creation workflows"
 labels: 3D Texturing
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

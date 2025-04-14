@@ -2,8 +2,8 @@
 name: Feedback Task
 about: Use this template for collection of stakeholder feedback
 title: "[FEEDBACK] - Collection of stakeholder feedback"
-labels: XR Release & Deploy
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

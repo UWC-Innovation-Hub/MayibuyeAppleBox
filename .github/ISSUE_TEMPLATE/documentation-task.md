@@ -3,7 +3,7 @@ name: Documentation Task
 about: Use this template for Documentation task
 title: "[DOCUMENTATION] - Project specifications and planning documentation"
 labels: documentation
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

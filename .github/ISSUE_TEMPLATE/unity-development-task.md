@@ -2,8 +2,8 @@
 name: Unity Development Task
 about: Use this template for everything to do with UNITY Dev Work
 title: "[UNITY] - Unity development work for interactive elements"
-labels: UNITY Development
-assignees: KaylynFritz, AyeshaBoomgaard
+labels: ''
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

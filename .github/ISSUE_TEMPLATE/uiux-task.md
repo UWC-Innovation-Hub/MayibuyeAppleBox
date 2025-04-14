@@ -3,7 +3,7 @@ name: UI/UX Task
 about: Use this template for design of interface elements and user experience components
 title: "[UI/UX] - Design of interface elements and user experience components"
 labels: Polish and Touches
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 

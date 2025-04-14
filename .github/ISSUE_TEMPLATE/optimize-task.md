@@ -3,7 +3,7 @@ name: Optimize Task
 about: Use this template for optimization of 3D models for web delivery
 title: "[OPTIMIZE] - Optimization of 3D models for web delivery"
 labels: 3D Optimization
-assignees: KaylynFritz, AyeshaBoomgaard
+assignees: AyeshaBoomgaard, KaylynFritz
 
 ---
 
