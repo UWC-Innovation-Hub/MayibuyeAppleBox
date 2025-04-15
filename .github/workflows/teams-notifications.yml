@@ -16,7 +16,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-          card-layout-start: |
+          card-layout: |
             {
               "@type": "MessageCard",
               "@context": "http://schema.org/extensions",
@@ -48,8 +48,6 @@ jobs:
                       "name": "Action",
                       "value": "${{ github.event_name }} / ${{ github.event.action }}"
                     }
-          card-layout-end: |
-                    }
                   ],
                   "markdown": true
                 }
@@ -67,7 +65,7 @@ jobs:
                 }
               ]
             }
-          
+
   assignment_notification:
     runs-on: ubuntu-latest
     if: github.event_name == 'issues' && (github.event.action == 'assigned' || github.event.action == 'unassigned')
