@@ -1,0 +1,214 @@
+name: Issue Status & Assignment Notifications
+
+on:
+  issues:
+    types: [assigned, unassigned, labeled, unlabeled, reopened, closed]
+  project_card:
+    types: [moved]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Teams Notification
+        uses: toko-bifrost/ms-teams-deploy-card@master
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          card-layout-start: |
+            {
+              "@type": "MessageCard",
+              "@context": "http://schema.org/extensions",
+              "themeColor": "0076D7",
+              "summary": "GitHub Issue Update",
+              "sections": [
+                {
+                  "activityTitle": "Issue Update in ${{ github.repository }}",
+                  "activitySubtitle": "Event triggered by ${{ github.actor }}",
+                  "activityImage": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                  "facts": [
+                    {
+                      "name": "Repository",
+                      "value": "${{ github.repository }}"
+                    },
+                    {
+                      "name": "Issue",
+                      "value": "${{ github.event.issue.title }}"
+                    },
+                    {
+                      "name": "Issue Number",
+                      "value": "${{ github.event.issue.number }}"
+                    },
+                    {
+                      "name": "Issue URL",
+                      "value": "${{ github.event.issue.html_url }}"
+                    },
+                    {
+                      "name": "Action",
+                      "value": "${{ github.event_name }} / ${{ github.event.action }}"
+                    }
+          card-layout-end: |
+                    }
+                  ],
+                  "markdown": true
+                }
+              ],
+              "potentialAction": [
+                {
+                  "@type": "OpenUri",
+                  "name": "View Issue",
+                  "targets": [
+                    {
+                      "os": "default",
+                      "uri": "${{ github.event.issue.html_url }}"
+                    }
+                  ]
+                }
+              ]
+            }
+          
+  assignment_notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && (github.event.action == 'assigned' || github.event.action == 'unassigned')
+    steps:
+      - name: Send Teams Assignment Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          title: "Issue Assignment Update"
+          summary: "Issue assignment has changed in ${{ github.repository }}"
+          sections: |
+            [{
+              "activityTitle": "${{ github.event.issue.title }}",
+              "activitySubtitle": "Issue #${{ github.event.issue.number }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Status",
+                  "value": "${{ github.event.issue.state }}"
+                },
+                {
+                  "name": "Repository",
+                  "value": "${{ github.repository }}"
+                },
+                {
+                  "name": "Action",
+                  "value": "${{ github.event.action }}"
+                },
+                {
+                  "name": "Assignee",
+                  "value": "${{ github.event.assignee.login }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Issue",
+              "targets": [
+                {
+                  "os": "default",
+                  "uri": "${{ github.event.issue.html_url }}"
+                }
+              ]
+            }]
+
+  status_change_notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && (github.event.action == 'closed' || github.event.action == 'reopened' || github.event.action == 'labeled' || github.event.action == 'unlabeled')
+    steps:
+      - name: Send Teams Status Change Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          title: "Issue Status Change"
+          summary: "Issue status has changed in ${{ github.repository }}"
+          sections: |
+            [{
+              "activityTitle": "${{ github.event.issue.title }}",
+              "activitySubtitle": "Issue #${{ github.event.issue.number }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Current Status",
+                  "value": "${{ github.event.issue.state }}"
+                },
+                {
+                  "name": "Repository", 
+                  "value": "${{ github.repository }}"
+                },
+                {
+                  "name": "Action",
+                  "value": "${{ github.event.action }}"
+                },
+                {
+                  "name": "Changed By",
+                  "value": "${{ github.actor }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Issue",
+              "targets": [
+                { 
+                  "os": "default",
+                  "uri": "${{ github.event.issue.html_url }}"
+                }
+              ]
+            }]
+
+  project_card_move:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'project_card' && github.event.action == 'moved'
+    steps:
+      - name: Send Teams Project Card Move Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          title: "Issue Moved in Project Board"
+          summary: "An issue was moved to a different column in a project board"
+          sections: |
+            [{
+              "activityTitle": "Project Card Moved",
+              "activitySubtitle": "Project: ${{ github.event.project_card.project_url }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Repository",
+                  "value": "${{ github.repository }}"
+                },
+                {
+                  "name": "Card ID",
+                  "value": "${{ github.event.project_card.id }}"
+                },
+                {
+                  "name": "Moved By",
+                  "value": "${{ github.actor }}"
+                },
+                {
+                  "name": "Column From",
+                  "value": "${{ github.event.changes.column_id.from }}"
+                },
+                {
+                  "name": "Column To",
+                  "value": "${{ github.event.project_card.column_id }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Project",
+              "targets": [
+                {
+                  "os": "default", 
+                  "uri": "${{ github.event.project_card.project_url }}"
+                }
+              ]
+            }]
