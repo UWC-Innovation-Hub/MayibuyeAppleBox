@@ -105,8 +105,8 @@ jobs:
                   "value": "${{ github.actor }}"
                 },
                 {
-                  "name": "Comment Preview",
-                  "value": "${{ github.event.comment.body | slice:0, 100 }}${{ github.event.comment.body.length > 100 && '...' || '' }}"
+                  "name": "Comment",
+                  "value": "${{ github.event.comment.body }}"
                 }
               ],
               "markdown": true
@@ -310,7 +310,7 @@ jobs:
                 },
                 {
                   "name": "Due Date",
-                  "value": "${{ github.event.milestone.due_on || 'No due date' }}"
+                  "value": "${{ github.event.milestone.due_on || 'None' }}"
                 }
               ],
               "markdown": true
