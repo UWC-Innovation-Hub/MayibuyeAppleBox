@@ -1,0 +1,180 @@
+name: Project Activity to Discussions
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, assigned, unassigned, labeled, unlabeled, milestoned, demilestoned]
+  issue_comment:
+    types: [created, edited]
+  milestone:
+    types: [created, closed, edited]
+  project_card:
+    types: [created, edited, moved, converted, deleted]
+  project:
+    types: [created, edited, closed, reopened]
+  project_column:
+    types: [created, edited, moved, deleted]
+
+jobs:
+  create-discussion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up variables
+        id: vars
+        run: |
+          # Issues
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            if [[ "${{ github.event.action }}" == "opened" ]]; then
+              echo "title=New Issue Created: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=🆕 **New issue created:** [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) by @${{ github.event.issue.user.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "edited" ]]; then
+              echo "title=Issue Updated: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=📝 **Issue updated:** [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "assigned" ]]; then
+              echo "title=Issue Assigned: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=👤 **Issue assigned:** [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) to @${{ github.event.assignee.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "unassigned" ]]; then
+              echo "title=Issue Unassigned: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=🙅 **Issue unassigned:** [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) from @${{ github.event.assignee.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "closed" ]]; then
+              echo "title=Issue Closed: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=✅ **Issue closed:** [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "reopened" ]]; then
+              echo "title=Issue Reopened: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=🔄 **Issue reopened:** [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "labeled" ]]; then
+              echo "title=Label Added to Issue: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=🏷️ **Label added:** '${{ github.event.label.name }}' added to [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "unlabeled" ]]; then
+              echo "title=Label Removed from Issue: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=🏷️ **Label removed:** '${{ github.event.label.name }}' removed from [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "milestoned" ]]; then
+              echo "title=Issue Added to Milestone: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=📅 **Added to milestone:** Issue [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) added to milestone [${{ github.event.milestone.title }}](${{ github.event.milestone.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "demilestoned" ]]; then
+              echo "title=Issue Removed from Milestone: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=📅 **Removed from milestone:** Issue [${{ github.event.issue.title }}](${{ github.event.issue.html_url }}) removed from milestone by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            fi
+          
+          # Issue Comments
+          elif [[ "${{ github.event_name }}" == "issue_comment" ]]; then
+            if [[ "${{ github.event.action }}" == "created" ]]; then
+              echo "title=New Comment on Issue: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=💬 **New comment:** on issue [${{ github.event.issue.title }}](${{ github.event.comment.html_url }}) by @${{ github.event.comment.user.login }}\n\n> ${{ github.event.comment.body | cut -c 1-200 }}...\n\n[View full comment](${{ github.event.comment.html_url }})" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "edited" ]]; then
+              echo "title=Comment Edited on Issue: ${{ github.event.issue.title }}" >> $GITHUB_OUTPUT
+              echo "body=✏️ **Comment edited:** on issue [${{ github.event.issue.title }}](${{ github.event.comment.html_url }}) by @${{ github.event.comment.user.login }}\n\n[View edited comment](${{ github.event.comment.html_url }})" >> $GITHUB_OUTPUT
+            fi
+          
+          # Milestones
+          elif [[ "${{ github.event_name }}" == "milestone" ]]; then
+            if [[ "${{ github.event.action }}" == "created" ]]; then
+              echo "title=New Milestone Created: ${{ github.event.milestone.title }}" >> $GITHUB_OUTPUT
+              echo "body=🎯 **New milestone created:** [${{ github.event.milestone.title }}](${{ github.event.milestone.html_url }}) by @${{ github.event.sender.login }}\n\nDue: ${{ github.event.milestone.due_on || 'No due date' }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "closed" ]]; then
+              echo "title=Milestone Completed: ${{ github.event.milestone.title }}" >> $GITHUB_OUTPUT
+              echo "body=🏁 **Milestone closed:** [${{ github.event.milestone.title }}](${{ github.event.milestone.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "edited" ]]; then
+              echo "title=Milestone Updated: ${{ github.event.milestone.title }}" >> $GITHUB_OUTPUT
+              echo "body=📝 **Milestone updated:** [${{ github.event.milestone.title }}](${{ github.event.milestone.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            fi
+          
+          # Project Cards (Status Changes)
+          elif [[ "${{ github.event_name }}" == "project_card" ]]; then
+            if [[ "${{ github.event.action }}" == "moved" ]]; then
+              # Get column name from API if available
+              echo "title=Task Status Changed" >> $GITHUB_OUTPUT
+              echo "body=📋 **Task status changed:** Issue/PR moved to a new column in project board by @${{ github.event.sender.login }}\n\n[View Project Card](${{ github.event.project_card.url }})" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "created" ]]; then
+              echo "title=Task Added to Project" >> $GITHUB_OUTPUT
+              echo "body=📌 **Task added to project:** A new card was added to the project board by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "edited" ]]; then
+              echo "title=Project Task Updated" >> $GITHUB_OUTPUT
+              echo "body=📝 **Project task updated:** A card was edited in the project board by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "converted" ]]; then
+              echo "title=Card Converted to Issue" >> $GITHUB_OUTPUT
+              echo "body=🔄 **Project note converted to issue:** A note in the project board was converted to an issue by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            fi
+          
+          # Project (Sprint)
+          elif [[ "${{ github.event_name }}" == "project" ]]; then
+            if [[ "${{ github.event.action }}" == "created" ]]; then
+              echo "title=New Project/Sprint Created: ${{ github.event.project.name }}" >> $GITHUB_OUTPUT
+              echo "body=🚀 **New project/sprint created:** [${{ github.event.project.name }}](${{ github.event.project.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "edited" ]]; then
+              echo "title=Project/Sprint Updated: ${{ github.event.project.name }}" >> $GITHUB_OUTPUT
+              echo "body=📝 **Project/sprint updated:** [${{ github.event.project.name }}](${{ github.event.project.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "closed" ]]; then
+              echo "title=Project/Sprint Completed: ${{ github.event.project.name }}" >> $GITHUB_OUTPUT
+              echo "body=✅ **Project/sprint completed:** [${{ github.event.project.name }}](${{ github.event.project.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "reopened" ]]; then
+              echo "title=Project/Sprint Reopened: ${{ github.event.project.name }}" >> $GITHUB_OUTPUT
+              echo "body=🔄 **Project/sprint reopened:** [${{ github.event.project.name }}](${{ github.event.project.html_url }}) by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            fi
+          
+          # Project Columns (Status Categories)
+          elif [[ "${{ github.event_name }}" == "project_column" ]]; then
+            if [[ "${{ github.event.action }}" == "created" ]]; then
+              echo "title=New Status Category Created" >> $GITHUB_OUTPUT
+              echo "body=🆕 **New status category created:** '${{ github.event.project_column.name }}' created in project by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "edited" ]]; then
+              echo "title=Status Category Updated" >> $GITHUB_OUTPUT
+              echo "body=📝 **Status category updated:** Project column '${{ github.event.project_column.name }}' updated by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            elif [[ "${{ github.event.action }}" == "moved" ]]; then
+              echo "title=Status Category Reordered" >> $GITHUB_OUTPUT
+              echo "body=🔄 **Status category reordered:** Project column '${{ github.event.project_column.name }}' reordered by @${{ github.event.sender.login }}" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Create GitHub Discussion
+        uses: gha-utilities/init-pull-request@v0.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          query: |
+            mutation createDiscussion {
+              createDiscussion(input: {
+                repositoryId: "${{ github.repository_id }}",
+                categoryId: "${{ secrets.PROJECT_UPDATES_CATEGORY_ID }}",
+                body: "${{ steps.vars.outputs.body }}",
+                title: "${{ steps.vars.outputs.title }}"
+              }) {
+                discussion {
+                  id
+                  url
+                }
+              }
+            }
+
+      # For status changes, we need to get the column name via the GitHub API
+      - name: Update Card Status Information
+        if: github.event_name == 'project_card' && github.event.action == 'moved'
+        uses: octokit/request-action@v2.x
+        id: get-column
+        with:
+          route: GET /projects/columns/${{ github.event.project_card.column_id }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Status Change Discussion
+        if: github.event_name == 'project_card' && github.event.action == 'moved'
+        uses: gha-utilities/init-pull-request@v0.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          query: |
+            mutation createDiscussion {
+              createDiscussion(input: {
+                repositoryId: "${{ github.repository_id }}",
+                categoryId: "${{ secrets.PROJECT_UPDATES_CATEGORY_ID }}",
+                body: "📋 **Task status changed to: ${{ fromJson(steps.get-column.outputs.data).name }}**\n\nMoved by @${{ github.event.sender.login }}\n\n[View Project Card](${{ github.event.project_card.url }})",
+                title: "Task Status Changed to: ${{ fromJson(steps.get-column.outputs.data).name }}"
+              }) {
+                discussion {
+                  id
+                  url
+                }
+              }
+            }
