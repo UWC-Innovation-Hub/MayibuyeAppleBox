@@ -1,149 +1,65 @@
-name: Issue Status & Assignment Notifications
+name: Project Tracking & Notifications
 
 on:
   issues:
-    types: [assigned, unassigned, labeled, unlabeled, reopened, closed]
+    types: [opened, edited, deleted, transferred, pinned, unpinned, closed, reopened, assigned, unassigned, labeled, unlabeled, locked, unlocked, milestoned, demilestoned]
+  issue_comment:
+    types: [created, edited, deleted]
   project_card:
-    types: [moved]
+    types: [created, moved, converted, deleted]
+  project:
+    types: [created, edited, closed, reopened, deleted]
+  project_column:
+    types: [created, edited, moved, deleted]
+  milestone:
+    types: [created, closed, opened, edited, deleted]
+  pull_request:
+    types: [opened, closed, reopened, edited, assigned, unassigned, review_requested, review_request_removed, labeled, unlabeled, milestoned, demilestoned]
 
 jobs:
-  notify:
+  issue_notification:
     runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
     steps:
-      - name: Send Teams Notification
-        uses: toko-bifrost/ms-teams-deploy-card@master
-        if: always()
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          webhook-uri: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
-          card-layout: |
-            {
-              "@type": "MessageCard",
-              "@context": "http://schema.org/extensions",
-              "themeColor": "0076D7",
-              "summary": "GitHub Issue Update",
-              "sections": [
-                {
-                  "activityTitle": "Issue Update in ${{ github.repository }}",
-                  "activitySubtitle": "Event triggered by ${{ github.actor }}",
-                  "activityImage": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-                  "facts": [
-                    {
-                      "name": "Repository",
-                      "value": "${{ github.repository }}"
-                    },
-                    {
-                      "name": "Issue",
-                      "value": "${{ github.event.issue.title }}"
-                    },
-                    {
-                      "name": "Issue Number",
-                      "value": "${{ github.event.issue.number }}"
-                    },
-                    {
-                      "name": "Issue URL",
-                      "value": "${{ github.event.issue.html_url }}"
-                    },
-                    {
-                      "name": "Action",
-                      "value": "${{ github.event_name }} / ${{ github.event.action }}"
-                    }
-                  ],
-                  "markdown": true
-                }
-              ],
-              "potentialAction": [
-                {
-                  "@type": "OpenUri",
-                  "name": "View Issue",
-                  "targets": [
-                    {
-                      "os": "default",
-                      "uri": "${{ github.event.issue.html_url }}"
-                    }
-                  ]
-                }
-              ]
-            }
-
-  assignment_notification:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'issues' && (github.event.action == 'assigned' || github.event.action == 'unassigned')
-    steps:
-      - name: Send Teams Assignment Notification
+      - name: Send Teams Issue Notification
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
           webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
-          title: "Issue Assignment Update"
-          summary: "Issue assignment has changed in ${{ github.repository }}"
+          title: "Issue Update"
+          summary: "Issue ${{ github.event.action }} in ${{ github.repository }}"
           sections: |
             [{
               "activityTitle": "${{ github.event.issue.title }}",
-              "activitySubtitle": "Issue #${{ github.event.issue.number }}",
+              "activitySubtitle": "Issue #${{ github.event.issue.number }} - ${{ github.event.action }}",
               "activityImage": "${{ github.event.sender.avatar_url }}",
               "facts": [
-                {
-                  "name": "Status",
-                  "value": "${{ github.event.issue.state }}"
-                },
                 {
                   "name": "Repository",
                   "value": "${{ github.repository }}"
                 },
                 {
-                  "name": "Action",
-                  "value": "${{ github.event.action }}"
-                },
-                {
-                  "name": "Assignee",
-                  "value": "${{ github.event.assignee.login }}"
-                }
-              ],
-              "markdown": true
-            }]
-          actions: |
-            [{
-              "@type": "OpenUri",
-              "name": "View Issue",
-              "targets": [
-                {
-                  "os": "default",
-                  "uri": "${{ github.event.issue.html_url }}"
-                }
-              ]
-            }]
-
-  status_change_notification:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'issues' && (github.event.action == 'closed' || github.event.action == 'reopened' || github.event.action == 'labeled' || github.event.action == 'unlabeled')
-    steps:
-      - name: Send Teams Status Change Notification
-        uses: aliencube/microsoft-teams-actions@v0.8.0
-        with:
-          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
-          title: "Issue Status Change"
-          summary: "Issue status has changed in ${{ github.repository }}"
-          sections: |
-            [{
-              "activityTitle": "${{ github.event.issue.title }}",
-              "activitySubtitle": "Issue #${{ github.event.issue.number }}",
-              "activityImage": "${{ github.event.sender.avatar_url }}",
-              "facts": [
-                {
-                  "name": "Current Status",
+                  "name": "Status",
                   "value": "${{ github.event.issue.state }}"
                 },
                 {
-                  "name": "Repository", 
-                  "value": "${{ github.repository }}"
-                },
-                {
                   "name": "Action",
                   "value": "${{ github.event.action }}"
                 },
                 {
-                  "name": "Changed By",
+                  "name": "Triggered By",
                   "value": "${{ github.actor }}"
+                },
+                {
+                  "name": "Labels",
+                  "value": "${{ join(github.event.issue.labels.*.name, ', ') || 'None' }}"
+                },
+                {
+                  "name": "Assignees",
+                  "value": "${{ join(github.event.issue.assignees.*.login, ', ') || 'None' }}"
+                },
+                {
+                  "name": "Milestone",
+                  "value": "${{ github.event.issue.milestone.title || 'None' }}"
                 }
               ],
               "markdown": true
@@ -160,20 +76,20 @@ jobs:
               ]
             }]
 
-  project_card_move:
+  comment_notification:
     runs-on: ubuntu-latest
-    if: github.event_name == 'project_card' && github.event.action == 'moved'
+    if: github.event_name == 'issue_comment'
     steps:
-      - name: Send Teams Project Card Move Notification
+      - name: Send Teams Comment Notification
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
           webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
-          title: "Issue Moved in Project Board"
-          summary: "An issue was moved to a different column in a project board"
+          title: "Issue Comment ${{ github.event.action }}"
+          summary: "A comment was ${{ github.event.action }} on an issue in ${{ github.repository }}"
           sections: |
             [{
-              "activityTitle": "Project Card Moved",
-              "activitySubtitle": "Project: ${{ github.event.project_card.project_url }}",
+              "activityTitle": "${{ github.event.issue.title }}",
+              "activitySubtitle": "Issue #${{ github.event.issue.number }} - Comment ${{ github.event.action }}",
               "activityImage": "${{ github.event.sender.avatar_url }}",
               "facts": [
                 {
@@ -181,20 +97,118 @@ jobs:
                   "value": "${{ github.repository }}"
                 },
                 {
-                  "name": "Card ID",
-                  "value": "${{ github.event.project_card.id }}"
+                  "name": "Issue Status",
+                  "value": "${{ github.event.issue.state }}"
                 },
                 {
-                  "name": "Moved By",
+                  "name": "Comment By",
                   "value": "${{ github.actor }}"
                 },
                 {
-                  "name": "Column From",
-                  "value": "${{ github.event.changes.column_id.from }}"
+                  "name": "Comment Preview",
+                  "value": "${{ github.event.comment.body | slice:0, 100 }}${{ github.event.comment.body.length > 100 && '...' || '' }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Comment",
+              "targets": [
+                {
+                  "os": "default",
+                  "uri": "${{ github.event.comment.html_url }}"
+                }
+              ]
+            }]
+
+  project_card_notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'project_card'
+    steps:
+      - name: Send Teams Project Card Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
+          title: "Project Card ${{ github.event.action }}"
+          summary: "A project card was ${{ github.event.action }} in ${{ github.repository }}"
+          sections: |
+            [{
+              "activityTitle": "Project Card ${{ github.event.action }}",
+              "activitySubtitle": "Card ID: ${{ github.event.project_card.id }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Repository",
+                  "value": "${{ github.repository }}"
                 },
                 {
-                  "name": "Column To",
+                  "name": "Action",
+                  "value": "${{ github.event.action }}"
+                },
+                {
+                  "name": "Triggered By",
+                  "value": "${{ github.actor }}"
+                },
+                {
+                  "name": "Project URL",
+                  "value": "${{ github.event.project_card.project_url }}"
+                },
+                {
+                  "name": "Column ID",
                   "value": "${{ github.event.project_card.column_id }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Project Card",
+              "targets": [
+                {
+                  "os": "default", 
+                  "uri": "${{ github.event.project_card.url }}"
+                }
+              ]
+            }]
+
+  project_notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'project'
+    steps:
+      - name: Send Teams Project Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
+          title: "Project ${{ github.event.action }}"
+          summary: "A project was ${{ github.event.action }} in ${{ github.repository }}"
+          sections: |
+            [{
+              "activityTitle": "${{ github.event.project.name }}",
+              "activitySubtitle": "Project ${{ github.event.action }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Repository",
+                  "value": "${{ github.repository }}"
+                },
+                {
+                  "name": "Action",
+                  "value": "${{ github.event.action }}"
+                },
+                {
+                  "name": "Triggered By",
+                  "value": "${{ github.actor }}"
+                },
+                {
+                  "name": "Project Body",
+                  "value": "${{ github.event.project.body || 'No description' }}"
+                },
+                {
+                  "name": "Project State",
+                  "value": "${{ github.event.project.state }}"
                 }
               ],
               "markdown": true
@@ -206,7 +220,168 @@ jobs:
               "targets": [
                 {
                   "os": "default", 
-                  "uri": "${{ github.event.project_card.project_url }}"
+                  "uri": "${{ github.event.project.html_url }}"
+                }
+              ]
+            }]
+
+  column_notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'project_column'
+    steps:
+      - name: Send Teams Column Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
+          title: "Project Column ${{ github.event.action }}"
+          summary: "A project column was ${{ github.event.action }} in ${{ github.repository }}"
+          sections: |
+            [{
+              "activityTitle": "Project Column ${{ github.event.action }}",
+              "activitySubtitle": "Column ID: ${{ github.event.project_column.id }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Repository",
+                  "value": "${{ github.repository }}"
+                },
+                {
+                  "name": "Action",
+                  "value": "${{ github.event.action }}"
+                },
+                {
+                  "name": "Triggered By",
+                  "value": "${{ github.actor }}"
+                },
+                {
+                  "name": "Column Name",
+                  "value": "${{ github.event.project_column.name }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Project",
+              "targets": [
+                {
+                  "os": "default", 
+                  "uri": "${{ github.event.project_column.project_url }}"
+                }
+              ]
+            }]
+
+  milestone_notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'milestone'
+    steps:
+      - name: Send Teams Milestone Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
+          title: "Milestone ${{ github.event.action }}"
+          summary: "A milestone was ${{ github.event.action }} in ${{ github.repository }}"
+          sections: |
+            [{
+              "activityTitle": "${{ github.event.milestone.title }}",
+              "activitySubtitle": "Milestone ${{ github.event.action }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Repository",
+                  "value": "${{ github.repository }}"
+                },
+                {
+                  "name": "Action",
+                  "value": "${{ github.event.action }}"
+                },
+                {
+                  "name": "Triggered By",
+                  "value": "${{ github.actor }}"
+                },
+                {
+                  "name": "Description",
+                  "value": "${{ github.event.milestone.description || 'No description' }}"
+                },
+                {
+                  "name": "State",
+                  "value": "${{ github.event.milestone.state }}"
+                },
+                {
+                  "name": "Due Date",
+                  "value": "${{ github.event.milestone.due_on || 'No due date' }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Milestone",
+              "targets": [
+                {
+                  "os": "default", 
+                  "uri": "${{ github.event.milestone.html_url }}"
+                }
+              ]
+            }]
+
+  pull_request_notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Send Teams Pull Request Notification
+        uses: aliencube/microsoft-teams-actions@v0.8.0
+        with:
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
+          title: "Pull Request ${{ github.event.action }}"
+          summary: "A pull request was ${{ github.event.action }} in ${{ github.repository }}"
+          sections: |
+            [{
+              "activityTitle": "${{ github.event.pull_request.title }}",
+              "activitySubtitle": "PR #${{ github.event.pull_request.number }} - ${{ github.event.action }}",
+              "activityImage": "${{ github.event.sender.avatar_url }}",
+              "facts": [
+                {
+                  "name": "Repository",
+                  "value": "${{ github.repository }}"
+                },
+                {
+                  "name": "Status",
+                  "value": "${{ github.event.pull_request.state }}"
+                },
+                {
+                  "name": "Action",
+                  "value": "${{ github.event.action }}"
+                },
+                {
+                  "name": "Author",
+                  "value": "${{ github.event.pull_request.user.login }}"
+                },
+                {
+                  "name": "Triggered By",
+                  "value": "${{ github.actor }}"
+                },
+                {
+                  "name": "Labels",
+                  "value": "${{ join(github.event.pull_request.labels.*.name, ', ') || 'None' }}"
+                },
+                {
+                  "name": "Milestone",
+                  "value": "${{ github.event.pull_request.milestone.title || 'None' }}"
+                }
+              ],
+              "markdown": true
+            }]
+          actions: |
+            [{
+              "@type": "OpenUri",
+              "name": "View Pull Request",
+              "targets": [
+                { 
+                  "os": "default",
+                  "uri": "${{ github.event.pull_request.html_url }}"
                 }
               ]
             }]
