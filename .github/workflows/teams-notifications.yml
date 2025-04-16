@@ -15,7 +15,7 @@ jobs:
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          webhook-uri: ${{ secrets.UPDATES FOR PROJECTS }}
+          webhook-uri: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
           card-layout: |
             {
               "@type": "MessageCard",
@@ -73,7 +73,7 @@ jobs:
       - name: Send Teams Assignment Notification
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
-          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
           title: "Issue Assignment Update"
           summary: "Issue assignment has changed in ${{ github.repository }}"
           sections: |
@@ -120,7 +120,7 @@ jobs:
       - name: Send Teams Status Change Notification
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
-          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
           title: "Issue Status Change"
           summary: "Issue status has changed in ${{ github.repository }}"
           sections: |
@@ -167,7 +167,7 @@ jobs:
       - name: Send Teams Project Card Move Notification
         uses: aliencube/microsoft-teams-actions@v0.8.0
         with:
-          webhook_url: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+          webhook_url: ${{ secrets.UPDATE_ON_PROJECT_STATUS }}
           title: "Issue Moved in Project Board"
           summary: "An issue was moved to a different column in a project board"
           sections: |
