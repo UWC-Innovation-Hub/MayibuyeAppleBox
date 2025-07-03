@@ -2,9 +2,8 @@
 name: XR System Test Case
 about: Use this template for creating system test cases for complete XR experiences
 title: "[XR SYSTEM TEST] - Testing complete XR system functionality"
-labels: ''
+labels: 
 assignees: AyeshaBoomgaard, KaylynFritz
-
 ---
 
 ## XR System Test Scope
