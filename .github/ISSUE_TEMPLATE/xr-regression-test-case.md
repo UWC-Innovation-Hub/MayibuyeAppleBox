@@ -2,9 +2,8 @@
 name: XR Regression Test Case
 about: Use this template for creating regression test cases for XR experiences
 title: "[XR REGRESSION TEST] - Testing existing XR functionality after changes"
-labels: ''
+labels: 
 assignees: AyeshaBoomgaard, KaylynFritz
-
 ---
 
 ## Changes Being Verified
