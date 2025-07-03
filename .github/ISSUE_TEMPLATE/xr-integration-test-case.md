@@ -2,9 +2,8 @@
 name: XR Integration Test Case
 about: Use this template for creating integration test cases for XR systems
 title: "[XR INTEGRATION TEST] - Testing integration between XR components"
-labels: ''
+labels: 
 assignees: AyeshaBoomgaard, KaylynFritz
-
 ---
 
 ## XR Components Being Integrated
