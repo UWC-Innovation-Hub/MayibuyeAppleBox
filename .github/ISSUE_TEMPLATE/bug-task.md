@@ -1,10 +1,9 @@
 ---
 name: Bug Task
-about: Use this template when something isn't working correctly
+about: Use this template when something isnt working correctly
 title: "[BUG] - Issue description"
 labels: bug
 assignees: AyeshaBoomgaard, KaylynFritz
-
 ---
 
 ## Bug Description
