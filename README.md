@@ -13,5 +13,8 @@ Political Education as Resistance;
 Political Education;
 Summer Games
 
+**🌐 Website:** 
+The initial website it to be created by the UIZ and shared with Robin Island Museum Mayibuye Archives, who will then integrate the content on their on websiste.
+
 **📄 License:**
 GPL-2.0 license
